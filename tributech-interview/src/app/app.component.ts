@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {Agents} from "./agents.interface";
 
 @Component({
   selector: 'app-root',
@@ -18,15 +19,6 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-}
-
-export interface Agents {
-  position: number,
-  online?: boolean,
-  name: string,
-  type?: string,
-  keyStorageType?: string,
-  proofKind?: string,
 }
 
 const ELEMENT_DATA: Agents[] = [

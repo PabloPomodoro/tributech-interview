@@ -1,0 +1,15 @@
+export interface Agents {
+    position: number,
+    isOnline?: boolean,
+    name: string,
+    type?: string,
+    keyStorageType?: string,
+    proofKind?: string,
+    deviceId?: string,
+    connectedTo?: string,
+    deviceType?: string,
+    creationDate?: Date,
+    publicKey?: string,
+    validFrom?: string,
+    validTill?: string,
+}
