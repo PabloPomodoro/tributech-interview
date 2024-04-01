@@ -1,23 +1,45 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, inject, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {Agents} from "./agents.interface";
+import {AppService} from "./app.service";
+import {map, Observable, of} from "rxjs";
+import {AsyncPipe} from "@angular/common";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule],
+  imports: [MatTableModule, MatPaginatorModule, AsyncPipe],
 })
 export class AppComponent implements AfterViewInit {
-  displayedColumns: string[] = ['position', 'name'];
-  dataSource = new MatTableDataSource<Agents>(ELEMENT_DATA);
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  displayedColumns: string[] = ['position', 'name'];
+  appService = inject(AppService);
+  agents$ = of(ELEMENT_DATA);//: Observable<Agents[]>;
+  agentsDataSource = new MatTableDataSource<Agents>();
+
+  constructor() {
+    this.refresh();
+  }
+
+  refresh() : void {
+    //this.agents$ = this.appService.getAgents();
+
+    this.agents$.pipe(map(agents => {
+      agents.sort((a, b) => Number(b.isOnline) - Number(a.isOnline));
+      agents.sort((a, b) => a.name.localeCompare(b.name))
+
+      return new MatTableDataSource<Agents>(agents);
+    })).subscribe(agents => {
+      // sadly the reactive way seems not to be possible, because of the paginator
+      this.agentsDataSource = agents;
+    });
+  }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    this.agentsDataSource.paginator = this.paginator;
   }
 }
 
