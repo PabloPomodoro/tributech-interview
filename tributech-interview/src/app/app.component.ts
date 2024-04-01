@@ -5,6 +5,7 @@ import {Agents} from "./agents.interface";
 import {AppService} from "./app.service";
 import {map, Observable, of} from "rxjs";
 import {AsyncPipe} from "@angular/common";
+import {OAuthService} from "angular-oauth2-oidc";
 
 @Component({
   selector: 'app-root',
@@ -20,12 +21,44 @@ export class AppComponent implements AfterViewInit {
   agents$ = of(ELEMENT_DATA);//: Observable<Agents[]>;
   agentsDataSource = new MatTableDataSource<Agents>();
 
-  constructor() {
+  constructor(private oauthService: OAuthService) {
+
+    // URL of the SPA to redirect the user to after login
+    this.oauthService.redirectUri = "http://localhost:4200";
+
+    // The SPA's id. The SPA is registered with this id at the auth-server
+    this.oauthService.clientId = "dataspace-admin";
+
+    // set the scope for the permissions the client should request
+    // The first three are defined by OIDC. The 4th is a use case specific one
+    this.oauthService.scope = "openid profile email voucher";
+
+    // set to true, to receive also an id_token via OpenId Connect (OIDC) in addition to the
+    // OAuth2-based access_token
+    this.oauthService.oidc = true; // ID_Token
+
+    // Use setStorage to use sessionStorage or another implementation of the TS-type Storage
+    // instead of localStorage
+    this.oauthService.setStorage(sessionStorage);
+
+    // Discovery Document of your AuthServer as defined by OIDC
+    let url = 'https://auth.ply2.tributech-node.com';
+
+    // Load Discovery Document and then try to log in the user
+    this.oauthService.loadDiscoveryDocument(url).then(() => {
+
+      // This method just tries to parse the token(s) within the url when
+      // the auth-server redirects the user back to the web-app
+      // It doesn't send the user the login page
+      this.oauthService.tryLogin({});
+
+    });
+
     this.refresh();
   }
 
   refresh() : void {
-    //this.agents$ = this.appService.getAgents();
+    this.agents$ = this.appService.getAgents();
 
     this.agents$.pipe(map(agents => {
       agents.sort((a, b) => Number(b.isOnline) - Number(a.isOnline));
