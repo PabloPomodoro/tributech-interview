@@ -1,3 +1,8 @@
+table {
+    width: 100%;
+    table-layout: fixed;
+}
+
 .mat-tributech-table {
     height: 100dvh;
     display: flex;
@@ -7,9 +12,24 @@
 }
 
 .mat-tributech-table-child {
-    width: 50%;
+    width: 60%;
     max-height: 100%;
 }
-.mat-row:nth-child(2n+1){
-    background-color: grey;
+
+.dot {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.green {
+    background: #4AB100;
+}
+
+.red {
+    background: #C43D14;
 }

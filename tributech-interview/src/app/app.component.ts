@@ -6,17 +6,19 @@ import {AppService} from "./app.service";
 import {map, Observable, of} from "rxjs";
 import {AsyncPipe} from "@angular/common";
 import {OAuthService} from "angular-oauth2-oidc";
+import {MatButton, MatIconButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, AsyncPipe],
+  imports: [MatTableModule, MatPaginatorModule, AsyncPipe, MatButton, MatIconButton, MatIcon],
 })
 export class AppComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  displayedColumns: string[] = ['position', 'name'];
+  displayedColumns: string[] = ['isOnline', 'name', 'deviceType', 'keyStorageType', 'proofKind', 'actions'];
   appService = inject(AppService);
   agents$ = of(ELEMENT_DATA);//: Observable<Agents[]>;
   agentsDataSource = new MatTableDataSource<Agents>();
@@ -58,7 +60,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   refresh() : void {
-    this.agents$ = this.appService.getAgents();
+    // this.agents$ = this.appService.getAgents();
 
     this.agents$.pipe(map(agents => {
       agents.sort((a, b) => Number(b.isOnline) - Number(a.isOnline));
@@ -77,24 +79,14 @@ export class AppComponent implements AfterViewInit {
 }
 
 const ELEMENT_DATA: Agents[] = [
-  {position: 1, name: 'Hydrogen'},
-  {position: 2, name: 'Helium'},
-  {position: 3, name: 'Lithium'},
-  {position: 4, name: 'Beryllium'},
-  {position: 5, name: 'Boron'},
-  {position: 6, name: 'Carbon'},
-  {position: 7, name: 'Nitrogen'},
-  {position: 8, name: 'Oxygen'},
-  {position: 9, name: 'Fluorine'},
-  {position: 10, name: 'Neon'},
-  {position: 11, name: 'Sodium'},
-  {position: 12, name: 'Magnesium'},
-  {position: 13, name: 'Aluminum'},
-  {position: 14, name: 'Silicon'},
-  {position: 15, name: 'Phosphorus'},
-  {position: 16, name: 'Sulfur'},
-  {position: 17, name: 'Chlorine'},
-  {position: 18, name: 'Argon'},
-  {position: 19, name: 'Potassium'},
-  {position: 20, name: 'Calcium'},
+  {isOnline: true, name: 'Hydrogen', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
+  {isOnline: true, name: 'Helium', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
+  {isOnline: true, name: 'Lithium', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
+  {isOnline: true, name: 'Beryllium', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
+  {isOnline: true, name: 'Boron', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
+  {isOnline: true, name: 'Carbon', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
+  {isOnline: false, name: 'Boron', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
+  {isOnline: false, name: 'Carbon', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
+  {isOnline: false, name: 'Fluorine', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
+  {isOnline: false, name: 'Neon', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
 ];
