@@ -3,7 +3,7 @@
         <div class="mat-tributech-search">
             <mat-form-field>
                 <mat-label>Search</mat-label>
-                <input matInput name="search" [ngModel]="defaultFilter" (keyup)="filterTableElements(defaultFilter)"/>
+                <input matInput name="search" [(ngModel)]="defaultFilter" (keyup)="filterTableElements(defaultFilter)"/>
                 <button mat-icon-button matSuffix>
                   <mat-icon>search</mat-icon>
                 </button>
