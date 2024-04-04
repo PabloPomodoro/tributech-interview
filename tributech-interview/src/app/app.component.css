@@ -3,17 +3,25 @@ table {
     table-layout: fixed;
 }
 
-.mat-tributech-table {
+.mat-tributech-page {
     height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 10px;
+    flex-direction: column;
 }
 
-.mat-tributech-table-child {
+.mat-tributech-table {
     width: 60%;
     max-height: 100%;
+}
+
+.mat-tributech-search {
+    padding-bottom: 10px;
+}
+
+.mat-flat-button {
+    width: 300px !important;
 }
 
 .mat-column-isOnline {
