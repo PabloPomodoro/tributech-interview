@@ -1,6 +1,6 @@
 <div class="mat-tributech-page">
     <div class=" mat-tributech-table">
-        <span class="mat-tributech-search">
+        <div class="mat-tributech-search">
             <mat-form-field>
                 <mat-label>Search</mat-label>
                 <input matInput name="search" [ngModel]="defaultFilter" (keyup)="filterTableElements(defaultFilter)"/>
@@ -8,11 +8,11 @@
                   <mat-icon>search</mat-icon>
                 </button>
             </mat-form-field>
-            <button mat-flat-button>
-                <mat-icon>refresh</mat-icon>
-                <mat-label>Refresh</mat-label>
+            <button class="mat-tributech-button" mat-flat-button>
+                <span class="material-icons">refresh</span>
+                <mat-label>&nbsp;Refresh</mat-label>
             </button>
-        </span>
+        </div>
 
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="agentsDataSource">

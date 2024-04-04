@@ -11,17 +11,31 @@ table {
     flex-direction: column;
 }
 
+@media screen and (min-width: 992px) {
+    .mat-tributech-table {
+        width: 70%;
+    }
+}
+@media screen and (max-width: 992px) {
+    .mat-tributech-table {
+        width: 95%;
+    }
+}
 .mat-tributech-table {
-    width: 60%;
     max-height: 100%;
 }
 
 .mat-tributech-search {
-    padding-bottom: 10px;
+    display: block;
+    padding-top: 10px;
 }
 
-.mat-flat-button {
-    width: 300px !important;
+.mat-tributech-button {
+    float: right;
+    width: 150px;
+    height: 56px;
+    color: #304761 !important;
+    background-color: #E4E4E4 !important;
 }
 
 .mat-column-isOnline {
