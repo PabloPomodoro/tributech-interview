@@ -25,6 +25,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     appService = inject(AppService);
     agents$ = of(ELEMENT_DATA);//: Observable<Agents[]>;
     agentsDataSource = new MatTableDataSource<Agents>();
+    filterString = '';
 
     constructor(private oauthService: OAuthService) {
         const authConfig: AuthConfig = {
@@ -52,12 +53,24 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
             this.oauthService.initCodeFlow();*/
 
-        this.defaultFilter = '';
-
         this.refresh();
     }
 
+    ngAfterViewInit() {
+        this.agentsDataSource.paginator = this.paginator;
+    }
+
+    ngOnDestroy(): void {
+        this.oauthService.logOut();
+    }
+
+    filterTableElements(filter: string) {
+        this.agentsDataSource.filter = filter.toLowerCase();
+    }
+
     refresh(): void {
+        this.agentsDataSource = new MatTableDataSource<Agents>();
+        this.agents$ = of(ELEMENT_DATA);
         // this.agents$ = this.appService.getAgents();
 
         this.agents$.pipe(map(agents => {
@@ -68,21 +81,13 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         })).subscribe(agents => {
             // sadly the reactive way doesn't seem to be possible, because of the paginator
             this.agentsDataSource = agents;
+            this.agentsDataSource.paginator = this.paginator;
+            this.agentsDataSource.filterPredicate = (data: {
+                name: string
+            }, filterValue: string) => data.name.trim().toLowerCase().indexOf(filterValue) !== -1;
+
+            this.filterString = '';
         });
-    }
-
-    defaultFilter: string;
-
-    filterTableElements(filter: string) {
-        this.agentsDataSource.filter = filter;
-    }
-
-    ngAfterViewInit() {
-        this.agentsDataSource.paginator = this.paginator;
-    }
-
-    ngOnDestroy(): void {
-        this.oauthService.logOut();
     }
 }
 

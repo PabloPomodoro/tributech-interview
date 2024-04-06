@@ -3,6 +3,10 @@ table {
     table-layout: fixed;
 }
 
+button {
+    border-radius: 16px !important;
+}
+
 .mat-tributech-page {
     height: 100dvh;
     display: flex;
@@ -36,6 +40,7 @@ table {
     height: 56px;
     color: #304761 !important;
     background-color: #E4E4E4 !important;
+    border-radius: 4px !important;
 }
 
 .mat-column-isOnline {
@@ -47,6 +52,10 @@ table {
 }
 .mat-column-actions {
     width: 10%;
+}
+
+.mat-mdc-row:nth-child(even) {
+    background-color: #F8F8FA;
 }
 
 .dot {
