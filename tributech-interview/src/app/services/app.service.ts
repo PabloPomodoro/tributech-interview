@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Agents} from "./agents.interface";
+import {Agents} from "../models/agents.interface";
 import {OAuthService} from "angular-oauth2-oidc";
 
 @Injectable({

@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, inject, OnDestroy, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {Agents} from "./agents.interface";
-import {AppService} from "./app.service";
+import {Agents} from "../models/agents.interface";
+import {AppService} from "../services/app.service";
 import {map, Observable, of} from "rxjs";
 import {AsyncPipe} from "@angular/common";
 import {AuthConfig, OAuthService} from "angular-oauth2-oidc";
