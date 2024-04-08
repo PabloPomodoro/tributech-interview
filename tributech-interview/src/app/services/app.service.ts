@@ -12,10 +12,9 @@ export class AppService {
     private oauthService = inject(OAuthService);
 
     getAgents(): Observable<Agents[]> {
-        var headers = new HttpHeaders();
-        headers.set('Accept', 'text/json');
-        headers.set('Authorization', 'Bearer ' + this.oauthService.getAccessToken())
-        console.log(this.oauthService.getAccessToken());
+        const headers = new HttpHeaders({
+            Authorization: 'Bearer ' + this.oauthService.getAccessToken()
+        });
         return this.httpClient.get<Agents[]>('https://ply2.tributech-node.com/demeter/api/agents', { headers: headers});
     }
 }

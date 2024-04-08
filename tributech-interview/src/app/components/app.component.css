@@ -10,6 +10,19 @@ button {
 .mat-tributech-page {
     height: 100dvh;
     display: flex;
+    align-items: end;
+    flex-direction: column;
+}
+
+.mat-tributech-login-button {
+    float: right;
+    width: 150px;
+    height: 56px;
+}
+
+.mat-tributech-table-section {
+    height: calc(100dvh - 56px);
+    display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;

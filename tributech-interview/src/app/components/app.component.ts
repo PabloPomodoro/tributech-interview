@@ -4,7 +4,6 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {Agents} from "../models/agents.interface";
 import {AppService} from "../services/app.service";
 import {map, Observable, of} from "rxjs";
-import {AsyncPipe} from "@angular/common";
 import {AuthConfig, OAuthService} from "angular-oauth2-oidc";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
@@ -17,15 +16,17 @@ import {MatInputModule} from "@angular/material/input";
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
     standalone: true,
-    imports: [MatTableModule, MatPaginatorModule, MatFormFieldModule, MatInputModule, AsyncPipe, MatButton, MatIconButton, MatIcon, FormsModule, MatFormField, MatLabel],
+    imports: [MatTableModule, MatPaginatorModule, MatFormFieldModule, MatInputModule, MatButton, MatIconButton, MatIcon, FormsModule, MatFormField, MatLabel],
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     displayedColumns: string[] = ['isOnline', 'name', 'deviceType', 'keyStorageType', 'proofKind', 'actions'];
-    appService = inject(AppService);
+
     agents$ = of(ELEMENT_DATA);//: Observable<Agents[]>;
     agentsDataSource = new MatTableDataSource<Agents>();
     filterString = '';
+
+    appService = inject(AppService);
 
     constructor(private oauthService: OAuthService) {
         const authConfig: AuthConfig = {
@@ -41,17 +42,15 @@ export class AppComponent implements AfterViewInit, OnDestroy {
             clientId: 'dataspace-admin',
 
             // Rechte des Benutzers, die die Angular-Anwendung wahrnehmen möchte
-            scope: 'openid profile email offline_access api',
+            scope: 'openid profile email offline_access',
 
             // Code Flow (PKCE ist standardmäßig bei Nutzung von Code Flow aktiviert)
             responseType: 'code'
 
         }
-        /*    oauthService.configure(authConfig);
-            oauthService.loadDiscoveryDocumentAndTryLogin();
-            oauthService.setupAutomaticSilentRefresh();
-
-            this.oauthService.initCodeFlow();*/
+        oauthService.configure(authConfig);
+        oauthService.loadDiscoveryDocumentAndTryLogin();
+        oauthService.setupAutomaticSilentRefresh();
 
         this.refresh();
     }
@@ -62,6 +61,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.oauthService.logOut();
+    }
+
+    login() {
+        this.oauthService.initCodeFlow();
     }
 
     filterTableElements(filter: string) {
