@@ -3,7 +3,7 @@ import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {Agents} from "../models/agents.interface";
 import {AppService} from "../services/app.service";
-import {map, Observable, of} from "rxjs";
+import {map, Observable} from "rxjs";
 import {AuthConfig, OAuthService} from "angular-oauth2-oidc";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
@@ -22,7 +22,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     displayedColumns: string[] = ['isOnline', 'name', 'deviceType', 'keyStorageType', 'proofKind', 'actions'];
 
-    agents$ = of(ELEMENT_DATA);//: Observable<Agents[]>;
+    agents$= new Observable<Agents[]>;
     agentsDataSource = new MatTableDataSource<Agents>();
     filterString = '';
 
@@ -30,21 +30,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
     constructor(private oauthService: OAuthService) {
         const authConfig: AuthConfig = {
-
-            // Url des Authorization-Servers
             issuer: 'https://auth.ply2.tributech-node.com/realms/node',
-
-            // Url der Angular-Anwendung
-            // An diese URL sendet der Authorization-Server den Access Code
             redirectUri: 'http://localhost:4200/',
-
-            // Name der Angular-Anwendung
             clientId: 'dataspace-admin',
-
-            // Rechte des Benutzers, die die Angular-Anwendung wahrnehmen möchte
-            scope: 'openid profile email offline_access',
-
-            // Code Flow (PKCE ist standardmäßig bei Nutzung von Code Flow aktiviert)
+            scope: 'openid token-api agent-api',
             responseType: 'code'
 
         }
@@ -73,8 +62,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
     refresh(): void {
         this.agentsDataSource = new MatTableDataSource<Agents>();
-        this.agents$ = of(ELEMENT_DATA);
-        // this.agents$ = this.appService.getAgents();
+        this.agents$ = this.appService.getAgents();
 
         this.agents$.pipe(map(agents => {
             agents.sort((a, b) => a.name.localeCompare(b.name))
@@ -93,26 +81,3 @@ export class AppComponent implements AfterViewInit, OnDestroy {
         });
     }
 }
-
-const ELEMENT_DATA: Agents[] = [
-    {isOnline: true, name: 'Hydrogen', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: true, name: 'Helium', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: true, name: 'Lithium', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: true, name: 'Beryllium', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: true, name: 'Boron', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: true, name: 'Carbon', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: false, name: 'Boron', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: false, name: 'Carbon', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: false, name: 'Fluorine', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: false, name: 'Neon', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: true, name: 'Hydrogen', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: true, name: 'Helium', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: true, name: 'Lithium', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: true, name: 'Beryllium', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: true, name: 'Boron', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: true, name: 'Carbon', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: false, name: 'Boron', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: false, name: 'Carbon', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: false, name: 'Fluorine', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-    {isOnline: false, name: 'Neon', deviceType: 'EDGE', keyStorageType: 'NONE', proofKind: 'SHA256_RSA2048_PSS'},
-];

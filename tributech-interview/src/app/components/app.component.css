@@ -60,8 +60,17 @@ button {
     width: 10%;
     text-align: center;
 }
-.mat-column-proofKind {
+.mat-column-name {
     width: 30%;
+}
+.mat-column-deviceType {
+    width: 10%;
+}
+.mat-column-keyStorageType {
+    width: 15%;
+}
+.mat-column-proofKind {
+    width: 25%;
 }
 .mat-column-actions {
     width: 10%;
